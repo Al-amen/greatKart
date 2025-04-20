@@ -74,15 +74,32 @@
             <div class="alert alert-danger text-center">
                 <strong>Out of Stock</strong>
             </div>
-        {% else %}
-            <div class="form-row">
-                <div class="col-sm-6">
-                    <a href="{% url "carts:add_to_cart" product.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
-                </div>
-                <div class="col-sm-6">
-                    <a href="" class="btn btn-light"> Buy now </a>
-                </div>
-            </div> <!-- form-row.// -->
+       
+             
+            {% else %} 
+              {% if in_cart %}
+                <div class="form-row">
+                    <div class="col-sm-6">
+                        <a href="#" class="btn  btn-success"> <span class="text">Added to cart</span> <i class="fas fa-check"></i>  </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="{% url "carts:cart"  %}" class="btn  btn-outline-primary"> <span class="text">View cart</span> <i class="fas fa-eye"></i>  </a>
+                    </div>
+                </div> <!-- form-row.// -->
+
+              {% else %}
+                <div class="form-row">
+                    <div class="col-sm-6">
+                        <a href="{% url "carts:add_to_cart" product.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="" class="btn btn-light"> Buy now </a>
+                    </div>
+                </div> <!-- form-row.// -->
+              {% endif %}
+
+             
+                
         {% endif %} 
        
         {% comment %} {% else %}

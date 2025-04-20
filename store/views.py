@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404,get_list_or_404
 from .models import Product, Category
 from django.views.generic import ListView, DetailView
 from django.db.models import Count
+from carts.models import Cart, CartItem
+from carts.views import _cart_id
 # Create your views here.
 
 class StoreView(ListView):
@@ -58,6 +60,7 @@ class ProductDetailView(DetailView):
     def get_object(self, queryset=None):
         category_slug = self.kwargs.get('category_slug')
         product_slug = self.kwargs.get('product_slug')
+       
 
         return get_object_or_404(
             Product,
@@ -65,6 +68,12 @@ class ProductDetailView(DetailView):
             category__slug=category_slug,
             is_available=True
         )
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = self.get_object()
+        in_cart = CartItem.objects.filter(cart__cart_id=_cart_id(self.request), product=product).exists()
+        context['in_cart'] = in_cart
+        return context
     
 
 def product_detail(request, category_slug, product_slug):
