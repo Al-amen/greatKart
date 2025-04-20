@@ -70,7 +70,26 @@
             </div>
         </div> <!-- row.// -->
         <hr>
+        {% if product.stock <= 0 %}
+            <div class="alert alert-danger text-center">
+                <strong>Out of Stock</strong>
+            </div>
+        {% else %}
+            <div class="form-row">
+                <div class="col-sm-6">
+                    <a href="./product-detail.html" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+                </div>
+                <div class="col-sm-6">
+                    <a href="" class="btn btn-light"> Buy now </a>
+                </div>
+            </div> <!-- form-row.// -->
+        {% endif %} 
+       
+        {% comment %} {% else %}
         <a href="./product-detail.html" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+           
+        {% endif %} {% endcomment %}
+
     </article> <!-- product-info-aside .// -->
             </main> <!-- col.// -->
         </div> <!-- row.// -->
