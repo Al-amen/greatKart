@@ -77,7 +77,7 @@
         {% else %}
             <div class="form-row">
                 <div class="col-sm-6">
-                    <a href="./product-detail.html" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
+                    <a href="{% url "carts:add_to_cart" product.id %}" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
                 </div>
                 <div class="col-sm-6">
                     <a href="" class="btn btn-light"> Buy now </a>
