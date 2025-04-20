@@ -22,13 +22,10 @@
                 <div class="card-body">
                     
                     <ul class="list-menu">
-                    <li><a href="#">People  </a></li>
-                    <li><a href="#">Watches </a></li>
-                    <li><a href="#">Cinema  </a></li>
-                    <li><a href="#">Clothes  </a></li>
-                    <li><a href="#">Home items </a></li>
-                    <li><a href="#">Animals</a></li>
-                    <li><a href="#">People </a></li>
+                     <li><a href="{% url "store:store"  %}"> All Products </a></li>
+                     {% for category in category_links %}
+                     <li><a href="{{category.get_url}}"> {{category.category_name}} </a></li>
+                     {% endfor %}
                     </ul>
     
                 </div> <!-- card-body.// -->
@@ -125,13 +122,13 @@
         <div class="col-md-4">
             <figure class="card card-product-grid">
                 <div class="img-wrap"> 
+                    <a href="{{product.get_url}}"><img src="{{ product.images.url }}" alt="{{ product.product_name }}"></a>
                     
-                    <img src="{{ product.images.url }}" alt="{{ product.product_name }}">
                     
                 </div> <!-- img-wrap.// -->
                 <figcaption class="info-wrap">
                     <div class="fix-height">
-                        <a href="./product-detail.html" class="title">{{product.product_name}}</a>
+                        <a href="{{product.get_url}}" class="title">{{product.product_name}}</a>
                         <div class="price-wrap mt-2">
                             <span class="price">${{ product.price }}</span>
                             <del class="price-old">$1980</del>

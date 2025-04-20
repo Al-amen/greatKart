@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import Product
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('product_name', 'price', 'stock', 'is_available', 'created_date', 'modified_date')
+    list_display = ('product_name', 'price', 'stock', 'is_available', 'slug', 'created_date', 'modified_date')
     prepopulated_fields = {'slug': ('product_name',)}
     list_editable = ('price', 'stock', 'is_available')
     list_filter = ('is_available',)
