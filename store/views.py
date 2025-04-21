@@ -4,6 +4,7 @@ from django.views.generic import ListView, DetailView
 from django.db.models import Count
 from carts.models import Cart, CartItem
 from carts.views import _cart_id
+from django.db.models import Q
 # Create your views here.
 
 class StoreView(ListView):
@@ -88,3 +89,42 @@ def product_detail(request, category_slug, product_slug):
     #     'product': product,
     # }
     return render(request, 'store/product-detail.html')
+
+
+def search(request):
+    product = None
+    total_products = 0
+    if 'keyword' in request.GET:
+        keyword = request.GET.get('keyword')
+        product = Product.objects.filter(Q(product_name__icontains=keyword) | Q(description__icontains=keyword))
+        total_products = product.count()
+    else:
+        product = Product.objects.all()
+        total_products = product.count()
+    context = {
+        'products': product,
+        'total_products': total_products,
+    }
+    return render(request, 'store/store.html', context)
+
+
+class ProductSearchView(ListView):
+    model = Product
+    template_name = 'store/store.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        if not hasattr(self, '_queryset'):
+            keyword = self.request.GET.get('keyword', '')
+            if keyword:
+                self._queryset = Product.objects.filter(
+                    Q(product_name__icontains=keyword) | Q(description__icontains=keyword)
+                )
+            else:
+                self._queryset = Product.objects.all()
+        return self._queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_products'] = self.get_queryset().count()
+        return context

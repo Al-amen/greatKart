@@ -3,9 +3,25 @@
 {% load static %}
 
 {% block content %}
+
+<!-- ========================= SECTION PAGETOP ========================= -->
+<section class="section-pagetop bg">
+    <div class="container">
+        {% if 'search' in request.path %}
+           <h2 class="title-page">Search Result</h2>
+        {% else %}
+           <h2 class="title-page">Our Store</h2>
+        {% endif %}
+        
+    </div> <!-- container //  -->
+    </section>
+    <!-- ========================= SECTION INTRO END// ========================= -->
+    
+
+
     <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
-    <div class="container">
+   <div class="container">
     
     <div class="row">
         <aside class="col-md-3">
@@ -118,28 +134,35 @@
     </header><!-- sect-heading -->
     
     <div class="row">
-        {% for product in products %}
-        <div class="col-md-4">
-            <figure class="card card-product-grid">
-                <div class="img-wrap"> 
-                    <a href="{{product.get_url}}"><img src="{{ product.images.url }}" alt="{{ product.product_name }}"></a>
-                    
-                    
-                </div> <!-- img-wrap.// -->
-                <figcaption class="info-wrap">
-                    <div class="fix-height">
-                        <a href="{{product.get_url}}" class="title">{{product.product_name}}</a>
-                        <div class="price-wrap mt-2">
-                            <span class="price">${{ product.price }}</span>
-                            <del class="price-old">$1980</del>
-                        </div> <!-- price-wrap.// -->
-                    </div>
-                  <a href="{{product.get_url}}" class="btn btn-block btn-success"> View Details </a> 
-                    
-                </figcaption>
-            </figure>
-        </div> <!-- col.// -->
-        {% endfor %}
+        {% if products %}
+            {% for product in products %}
+            <div class="col-md-4">
+                <figure class="card card-product-grid">
+                    <div class="img-wrap"> 
+                        <a href="{{product.get_url}}"><img src="{{ product.images.url }}" alt="{{ product.product_name }}"></a>
+                        
+                        
+                    </div> <!-- img-wrap.// -->
+                    <figcaption class="info-wrap">
+                        <div class="fix-height">
+                            <a href="{{product.get_url}}" class="title">{{product.product_name}}</a>
+                            <div class="price-wrap mt-2">
+                                <span class="price">${{ product.price }}</span>
+                                <del class="price-old">$1980</del>
+                            </div> <!-- price-wrap.// -->
+                        </div>
+                    <a href="{{product.get_url}}" class="btn btn-block btn-success"> View Details </a> 
+                        
+                    </figcaption>
+                </figure>
+            </div> <!-- col.// -->
+           {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <div class="alert alert-warning text-center" role="alert">
+                    No products found . Try again with different keyword.
+                </div>
+        {% endif %}
     
        
 
