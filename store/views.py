@@ -10,7 +10,8 @@ class StoreView(ListView):
     model = Product
     template_name = 'store/store.html'
     context_object_name = 'products'
-    paginate_by = 10  # Optional: if you want pagination
+    paginate_by = 2  # Optional: if you want pagination
+    page_kwarg = 'page'
 
     def get_queryset(self):
         category_slug = self.kwargs.get('category_slug')
@@ -30,6 +31,8 @@ class StoreView(ListView):
             context['total_products'] = Product.objects.filter(category=category, is_available=True).aggregate(total=Count('id'))['total']
         else:
             context['total_products'] = Product.objects.filter(is_available=True).aggregate(total=Count('id'))['total']
+        
+
         
         return context
 
