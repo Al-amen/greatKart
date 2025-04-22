@@ -16,7 +16,7 @@ class StoreView(ListView):
 
     def get_queryset(self):
         category_slug = self.kwargs.get('category_slug')
-        queryset = Product.objects.filter(is_available=True).select_related('category') # N+1 fixed
+        queryset = Product.objects.filter(is_available=True).select_related('category').order_by('-created_date') # N+1 fixed
         if category_slug:
             category = get_object_or_404(Category, slug=category_slug)
             queryset = queryset.filter(category=category)

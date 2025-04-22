@@ -40,7 +40,15 @@
                     <div class="aside"><img src="{{cart_item.product.images.url}}" class="img-sm"></div>
                     <figcaption class="info">
                         <a href="{{cart_item.product.get_url}}" class="title text-dark">{{cart_item.product.product_name}}</a>
-                        <p class="text-muted small">Matrix: 25 Mpx <br> Brand: Canon</p>
+                        <p class="text-muted small">
+                            {% if cart_item.variation.all %}
+                            {% for i in cart_item.variation.all %}
+                            {{i.variation_category | capfirst }}: {{i.variation_value | capfirst}} <br>
+                              
+                            {% endfor %}
+                            
+                            {% endif %}
+                        </p>
                     </figcaption>
                 </figure>
             </td>
