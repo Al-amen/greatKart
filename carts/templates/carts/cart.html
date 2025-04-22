@@ -81,7 +81,12 @@
                 </div> <!-- price-wrap .// -->
             </td>
             <td class="text-right"> 
-            <a href="{% url "carts:remove_cart_item" cart_item.product.id cart_item.id %}" class="btn btn-danger"> Remove</a>
+                <a href="{% url 'carts:remove_cart_item' cart_item.product.id cart_item.id %}" 
+                class="btn btn-danger" 
+                onclick="return confirm('Are you sure you want to delete this item?')">
+                Remove
+             </a>
+             
             </td>
         </tr>
         {% endfor %}
