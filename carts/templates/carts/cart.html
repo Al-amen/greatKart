@@ -60,8 +60,16 @@
                                     <a href="{% url "carts:remove_cart_quantity" cart_item.product.id %}" class="btn btn-light" type="button" id="button-plus"> <i class="fa fa-minus"></i> </a>
                                     </div>
                                     <input type="text" class="form-control"  value="{{cart_item.quantity}}">
+                                    
                                     <div class="input-group-append">
-                                    <a href="{% url "carts:add_to_cart" cart_item.product.id %}" class="btn btn-light" type="button" id="button-minus"> <i class="fa fa-plus"></i> </a>
+                                      <form action="{% url "carts:add_to_cart" cart_item.product.id %}" method="POST">
+                                        {% csrf_token %}
+                                        {% for item in cart_item.variation.all %}
+                                        <input type="hidden" name="{{item.variation_category | lower }}" value="{{item.variation_value | capfirst }}">
+
+                                        {% endfor %}
+                                        <button class="btn btn-light" type="submit" id="button-minus"> <i class="fa fa-plus"></i> </button>
+                                    </form>
                                     </div>
                                 </div> <!-- input-group.// -->
                             </div> <!-- col.// -->
