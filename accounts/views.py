@@ -48,11 +48,8 @@ class RegisterView(CreateView):
         to_email = user.email
         email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [to_email])
         email.send()
-        print("User ID:", user.pk)
-        print("Encoded UID:", uid)
-        print("Token Generated:", token)
-
-        messages.success(self.request, "An email has been sent. Please check your inbox to activate your account.")
+       
+       # messages.success(self.request, "An email has been sent. Please check your inbox to activate your account.")
         return redirect(f'/accounts/login/?command=verification&email={to_email}')
 
 
@@ -66,10 +63,6 @@ class ActivateAccountView(View):
             user = User._default_manager.get(pk=uid)
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             user = None
-        
-        print("URL Token:", token)
-        print("Is token valid?", default_token_generator.check_token(user, token))
-        print("User is_active:", user.is_active)
 
         if user is not None and default_token_generator.check_token(user, token):
             user.is_active = True
@@ -108,5 +101,84 @@ class CustomLogoutView(LoginRequiredMixin, View):
         return redirect('home')
 
 
-class DashboardView(TemplateView):
+class DashboardView(LoginRequiredMixin,TemplateView):
     template_name = "accounts/dashboard.html"
+
+
+
+class ForgotPassword(View):
+    
+    def get(self,request):
+        return render(request,'accounts/forgot_password.html')
+
+    def post(self,request,*args, **kwargs):
+        email = request.POST.get('email')
+
+        if CustomUser.objects.filter(email=email):
+            user = CustomUser.objects.get(email__exact=email)
+            current_site = get_current_site(self.request)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            token = default_token_generator.make_token(user)
+            activation_link = f"http://{current_site.domain}/accounts/password-reset-validate/{uid}/{token}/"
+            subject = "Activate your account"
+            message = render_to_string('accounts/reset_password_email.html', {
+                'user': user,
+                'activation_link': activation_link,
+            })
+
+            to_email = user.email
+            email = EmailMessage(subject, message, settings.DEFAULT_FROM_EMAIL, [to_email])
+            email.send()
+            messages.success(request, 'Password reset email has been sent to your email address.')
+            return redirect('accounts:login')
+        else:
+            messages.error(request, 'Account does not exist!')
+            return redirect('accounts:forgot-password')
+
+
+class ResetPasswordValidate(View):
+
+    def get(self,request,uidb64,token):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            user = User._default_manager.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            user = None
+        print(uid,user)
+        
+        if user is not None and default_token_generator.check_token(user, token):
+            request.session['uid'] = uid
+            messages.success(request, 'Please reset your password')
+            return redirect('accounts:reset-password')
+        else:
+            messages.error(request, 'This link has been expired!')
+            return redirect('accounts:login')
+            
+
+class ResetPassword(View):
+   
+   def get(self,request):
+       return render(request,'accounts/reset_password.html')
+   
+
+   def post(self,request):
+       password = request.POST.get('password')
+       confirm_password = request.POST.get('confirm_password')
+
+       if password == confirm_password:
+           uid = request.session['uid']
+           user = CustomUser.objects.get(pk=uid)
+           user.set_password(password)
+           user.save()
+           messages.success(request, 'Password reset successful')
+           return redirect('accounts:login')
+       else:
+            messages.error(request, 'Password do not match!')
+            return redirect('accounts:reset-password')
+    
+
+
+
+        
+
+
