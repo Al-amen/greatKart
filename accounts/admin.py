@@ -4,7 +4,7 @@ from .models import CustomUser
 
 
 class CustomUserAdmin(UserAdmin):
-    list_display = ('email', 'username', 'first_name', 'last_name', 'is_active', 'is_staff','last_login','date_joined')
+    list_display = ('id','email', 'username', 'first_name', 'last_name', 'is_active', 'is_staff','last_login','date_joined')
     list_display_links = ('email','username','first_name','last_name')
     list_filter = ('is_admin',)
   
