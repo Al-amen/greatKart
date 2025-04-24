@@ -17,6 +17,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from .models import CustomUser
 from django.urls import reverse_lazy
+import requests
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -88,27 +89,59 @@ class LoginView(View):
         email = request.POST.get('email')
         password = request.POST.get('password')
         user = authenticate(request, email=email, password=password)
-        print(user)
+
         if user is not None:
-            try:
-                cart = Cart.objects.get(cart_id = _cart_id(request))
-                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
-
-                if is_cart_item_exists:
-                    cart_item = CartItem.objects.filter(cart=cart)
-                    print(cart_item)
-                    for item in cart_item:
-                        item.user = user
-                        item.save()
-
-            except:
-                pass
+            old_cart_id = _cart_id(request)
             login(request, user)
+
+            try:
+                cart = Cart.objects.get(cart_id=old_cart_id)
+                guest_cart_items = CartItem.objects.filter(cart=cart, user=None)
+
+                for guest_item in guest_cart_items:
+                    guest_variations = list(guest_item.variation.all())
+
+                    # Check if user already has this product + variation
+                    existing_items = CartItem.objects.filter(user=user, product=guest_item.product)
+                    found_match = False
+
+                    for existing_item in existing_items:
+                        existing_variations = list(existing_item.variation.all())
+
+                        if sorted(guest_variations, key=lambda x: x.id) == sorted(existing_variations, key=lambda x: x.id):
+                            # Merge: Increase quantity
+                            existing_item.quantity += guest_item.quantity
+                            existing_item.save()
+                            found_match = True
+                            break
+
+                    if not found_match:
+                        # Assign guest item to user
+                        guest_item.user = user
+                        guest_item.save()
+
+            except Cart.DoesNotExist:
+                print("No guest cart found")
+        
+
             messages.success(request, "Login successful.")
-            return redirect('accounts:dashboard')  # Redirect to home or any other page
+            url = request.META.get('HTTP_REFERER')
+            try:
+                query = requests.utils.urlparse(url).query
+                    # next=/cart/checkout/
+                params = dict(x.split('=') for x in query.split('&'))
+                if 'next' in params:
+                    nextPage = params['next']
+                    return redirect(nextPage)
+            except:
+                return redirect('accounts:dashboard')
         else:
-            messages.error(request, "Invalid credentials.")
-            return render(request, self.template_name)
+            messages.error(request, 'Invalid login credentials')
+            return redirect('accounts:login')
+
+     
+
+
 
 class CustomLogoutView(LoginRequiredMixin, View):
     def get(self, request):
