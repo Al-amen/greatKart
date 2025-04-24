@@ -20,6 +20,9 @@ from django.urls import reverse_lazy
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
+from carts.models import Cart,CartItem
+from carts.views import _cart_id
+from store.models import Product
 
 
 # Create your views here.
@@ -87,6 +90,19 @@ class LoginView(View):
         user = authenticate(request, email=email, password=password)
         print(user)
         if user is not None:
+            try:
+                cart = Cart.objects.get(cart_id = _cart_id(request))
+                is_cart_item_exists = CartItem.objects.filter(cart=cart).exists()
+
+                if is_cart_item_exists:
+                    cart_item = CartItem.objects.filter(cart=cart)
+                    print(cart_item)
+                    for item in cart_item:
+                        item.user = user
+                        item.save()
+
+            except:
+                pass
             login(request, user)
             messages.success(request, "Login successful.")
             return redirect('accounts:dashboard')  # Redirect to home or any other page

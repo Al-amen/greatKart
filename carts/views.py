@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect,get_object_or_404
 from store.models import Product,Variation
 from .models import Cart,CartItem
 from django.views import View
+from django.contrib.auth.decorators import login_required
 
 def _cart_id(request):
     cart = request.session.session_key
@@ -144,7 +145,7 @@ def cart(request,total=0,quantity=0, cart_items=None):
     }
     return render(request, 'carts/cart.html',context=context)
 
-
+@login_required
 def checkout(request):
     try:
         total = 0
