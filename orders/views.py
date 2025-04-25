@@ -5,7 +5,9 @@ from .models import Payment,Order,OrderProduct
 from carts.models import CartItem
 import datetime
 
+def payments(request):
 
+    return render(request,'orders/payments.html')
 
 def order_place(request,total=0,quantity=0):
     current_user = request.user
@@ -20,7 +22,7 @@ def order_place(request,total=0,quantity=0):
     tax = 0
 
     for cart_item in cart_items:
-        total += cart_item.quantity
+        total += cart_item.quantity*cart_item.product.price
         quantity += cart_item.quantity
     tax = (2*total)/100
     grand_total = total + tax
@@ -51,8 +53,17 @@ def order_place(request,total=0,quantity=0):
             order_number = current_date + str(data.id)
             data.order_number = order_number
             data.save()
+            order = Order.objects.get(user=current_user,is_ordered=False,order_number=order_number)
+            context = {
+                'cart_items':cart_items,
+                'tax':tax,
+                'total':total,
+                'grand_total':grand_total,
+                'order':order
 
-            return redirect('carts:checkout') 
+            }
+
+            return render(request, 'orders/payments.html', context) 
         else:
             return redirect('carts:checkout') 
             
