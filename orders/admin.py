@@ -3,10 +3,10 @@ from .models import Payment,Order,OrderProduct
 
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('payment_id',' payment_method','amount_paid','status','created_at')
+    list_display = ('payment_id','payment_method','amount_paid','status','created_at')
     search_fields = ('status','payment_method')
 
-admin.site.register(PaymentAdmin,Payment)
+
 
 class OrderProductInline(admin.TabularInline):
     model = OrderProduct
@@ -19,5 +19,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_per_page = 20
     inlines = [OrderProductInline]
 
+admin.site.register(Payment,PaymentAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(OrderProduct)
