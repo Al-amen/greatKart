@@ -23,8 +23,8 @@
 					<div class="card-body">
 						<h5 class="card-title">Total Orders</h5>
 						<h4>{{orders_count}}</h4>
-						<a href="">View Orders</a> 
-                        {% comment %} {% url 'my_orders' %} {% endcomment %}
+						<a href="{% url 'accounts:my-orders' %}">View Orders</a> 
+                         
 					</div>
 				</div>
 			</div>

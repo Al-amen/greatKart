@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from django.views import View
-from django.views.generic import CreateView,TemplateView
+from django.views.generic import CreateView,TemplateView,ListView
 from .forms import RegistrationForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -162,6 +162,15 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         return context
     
 
+class MyOrdersView(LoginRequiredMixin, ListView):
+    model = Order
+    template_name = "accounts/my_order.html"
+    context_object_name = "orders"
+
+    def get_queryset(self):
+        return Order.objects.filter(user_id=self.request.user.id, is_ordered=True).order_by('-created_at')
+
+    
     
 
 

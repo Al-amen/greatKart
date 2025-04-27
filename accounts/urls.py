@@ -10,7 +10,8 @@ urlpatterns = [
      path('',views.DashboardView.as_view(),name="dashboard"),
      path('forgot-password/',views.ForgotPassword.as_view(),name='forgot-password'),
      path('password-reset-validate/<uidb64>/<token>/',views.ResetPasswordValidate.as_view(),name='password-reset-validate'),
-     path('reset-password',views.ResetPassword.as_view(),name='reset-password')
+     path('reset-password',views.ResetPassword.as_view(),name='reset-password'),
+     path('my-orders/',views.MyOrdersView.as_view(),name='my-orders'),
 
 
     
