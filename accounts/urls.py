@@ -8,11 +8,15 @@ urlpatterns = [
      path('logout/', views.CustomLogoutView.as_view(), name='logout'),
      path('activate/<uidb64>/<token>/', views.ActivateAccountView.as_view(), name='activate'),
      path('',views.DashboardView.as_view(),name="dashboard"),
+
      path('forgot-password/',views.ForgotPassword.as_view(),name='forgot-password'),
      path('password-reset-validate/<uidb64>/<token>/',views.ResetPasswordValidate.as_view(),name='password-reset-validate'),
      path('reset-password',views.ResetPassword.as_view(),name='reset-password'),
+
      path('my-orders/',views.MyOrdersView.as_view(),name='my-orders'),
-     path('edit-profile',views.EditProfileView.as_view(),name='edit-profile')
+     path('edit-profile/',views.EditProfileView.as_view(),name='edit-profile'),
+     path('change-password/',views.ChangePasswordView.as_view(),name='change-password'),
+     
 
 
     

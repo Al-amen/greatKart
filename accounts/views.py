@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.views.generic import CreateView,TemplateView,ListView
+from django.views.generic import CreateView,TemplateView,ListView,DetailView
 from .forms import RegistrationForm,UserForm,UserProfileForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -209,6 +209,33 @@ class EditProfileView(LoginRequiredMixin,View):
             }
             return render(request, self.template_name, context)
     
+
+class ChangePasswordView(LoginRequiredMixin,View):
+    template_name = 'accounts/change_password.html'
+
+    def get(self,request):
+        return render(request,self.template_name)
+    
+    def post(self,request):
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+
+        user = CustomUser.objects.get(username__exact=request.user.username)
+        if new_password == confirm_password:
+            success = user.check_password(current_password)
+            if success:
+                user.set_password(confirm_password)
+                user.save()
+                messages.success(request, 'Password updated successfully.')
+                return redirect('accounts:change-password')
+            else:
+                messages.error(request, 'Please enter valid current password')
+                return redirect('accounts:change-password')
+        else:
+            messages.error(request, 'Password does not match!')
+            return redirect('accounts:change-password')
+
 
 
 
