@@ -18,6 +18,7 @@ from django.conf import settings
 from .models import CustomUser
 from django.urls import reverse_lazy
 import requests
+from orders.models import Order
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -150,8 +151,19 @@ class CustomLogoutView(LoginRequiredMixin, View):
         return redirect('home')
 
 
-class DashboardView(LoginRequiredMixin,TemplateView):
+class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = "accounts/dashboard.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        orders = Order.objects.filter(user_id=self.request.user.id, is_ordered=True).order_by('-created_at')
+        context["orders"] = orders
+        context["orders_count"] = orders.count()
+        return context
+    
+
+    
+
 
 
 

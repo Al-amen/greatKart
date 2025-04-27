@@ -179,6 +179,8 @@ def submit_review(request,product_id):
                 data.product_id = product_id
                 data.user_id = request.user.id
                 data.save()
+                data.status = True
+                data.save()
                 messages.success(request, 'Thank you! Your review has been submitted.')
                 return redirect(url)
             else:
