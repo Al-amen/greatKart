@@ -31,8 +31,8 @@
 				  <tbody>
 						{% for order in orders %}
 				    <tr>
-				     <th scope="row"><a href="">{{order.order_number}}</a></th> 
-                     {% comment %} {% url 'order_detail' order.order_number %} {% endcomment %}
+				     <th scope="row"><a href="{% url 'accounts:order-detail' order.order_number %} ">{{order.order_number}}</a></th> 
+                      
 				      <td>{{order.full_name}}</td>
 				      <td>{{order.phone}}</td>
 				      <td>${{order.order_total}}</td>

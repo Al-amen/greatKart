@@ -25,6 +25,7 @@ User = get_user_model()
 from carts.models import Cart,CartItem
 from carts.views import _cart_id
 from store.models import Product
+from orders.models import OrderProduct
 
 
 # Create your views here.
@@ -236,8 +237,27 @@ class ChangePasswordView(LoginRequiredMixin,View):
             messages.error(request, 'Password does not match!')
             return redirect('accounts:change-password')
 
+class OrderDetailView(LoginRequiredMixin, DetailView):
+    model = Order
+    template_name = 'accounts/order_detail.html'
+    context_object_name = 'order'
+    slug_field = 'order_number'
+    slug_url_kwarg = 'order_number'
 
+    def get_object(self):
+        order_number = self.kwargs.get('order_number')
+        return get_object_or_404(Order, order_number=order_number)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        order = self.get_object()
+        order_detail = OrderProduct.objects.filter(order=order)
+        subtotal = 0
+        for item in order_detail:
+            subtotal += item.product_price * item.quantity
+        context['order_detail'] = order_detail
+        context['subtotal'] = subtotal
+        return context
 
 class ForgotPassword(View):
     

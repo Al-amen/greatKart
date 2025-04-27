@@ -16,6 +16,7 @@ urlpatterns = [
      path('my-orders/',views.MyOrdersView.as_view(),name='my-orders'),
      path('edit-profile/',views.EditProfileView.as_view(),name='edit-profile'),
      path('change-password/',views.ChangePasswordView.as_view(),name='change-password'),
+     path('order-detail/<str:order_number>/',views.OrderDetailView.as_view(),name='order-detail'),
      
 
 
