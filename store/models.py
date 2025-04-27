@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from category.models import Category
+from accounts.models import CustomUser
+from django.db.models import Avg, Count
 
 class Product(models.Model):
     product_name = models.CharField(max_length=200,)
@@ -21,6 +23,21 @@ class Product(models.Model):
 
     def get_url(self):
         return reverse('store:product_detail', args=[self.category.slug, self.slug])
+    
+    def averageReview(self):
+        reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(average=Avg('rating'))
+        avg = 0
+        if reviews['average'] is not None:
+            avg = float(reviews['average'])
+        return avg
+    
+    def countReview(self):
+        reviews = ReviewRating.objects.filter(product=self, status=True).aggregate(count=Count('id'))
+        count = 0
+        if reviews['count'] is not None:
+            count = int(reviews['count'])
+        return count
+
 
     def __str__(self):
         return self.product_name
@@ -56,3 +73,20 @@ class Variation(models.Model):
 
     def __str__(self):
         return self. variation_value
+
+class ReviewRating(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=100)
+    review = models.TextField(max_length=500, blank=True)
+    rating = models.FloatField()
+    ip = models.CharField(max_length=20, blank=True)
+    status = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-created_date']
+
+    def __str__(self):
+        return self.subject
