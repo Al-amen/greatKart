@@ -1,7 +1,7 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.views.generic import CreateView,TemplateView,ListView
-from .forms import RegistrationForm
+from .forms import RegistrationForm,UserForm,UserProfileForm
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -15,7 +15,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.conf import settings
-from .models import CustomUser
+from .models import CustomUser, UserProfile
 from django.urls import reverse_lazy
 import requests
 from orders.models import Order
@@ -159,6 +159,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         orders = Order.objects.filter(user_id=self.request.user.id, is_ordered=True).order_by('-created_at')
         context["orders"] = orders
         context["orders_count"] = orders.count()
+        context["userprofile"] = get_object_or_404(UserProfile,user_id=self.request.user.id)
         return context
     
 
@@ -169,10 +170,45 @@ class MyOrdersView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Order.objects.filter(user_id=self.request.user.id, is_ordered=True).order_by('-created_at')
+   
+    
 
     
+class EditProfileView(LoginRequiredMixin,View):
+    template_name = 'accounts/edit_profile.html'
     
+    def get(self, request):
+        userprofile = get_object_or_404(UserProfile, user=request.user)
+        user_form = UserForm(instance=request.user)
+        profile_form = UserProfileForm(instance=userprofile)
+        context = {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            'userprofile': userprofile,
+        }
+        print(f"userprofile {userprofile.profile_picture.url}")
+        return render(request, self.template_name, context)
+    
+    def post(self, request):
+        userprofile = get_object_or_404(UserProfile, user=request.user)
+        
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=userprofile)
 
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile has been updated successfully.')
+            return redirect('accounts:dashboard')
+        else:
+            messages.error(request, 'Please correct the error below.')
+            context = {
+                'user_form': user_form,
+                'profile_form': profile_form,
+                'userprofile': userprofile
+            }
+            return render(request, self.template_name, context)
+    
 
 
 
