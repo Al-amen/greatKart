@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404,get_list_or_404
-from .models import Product, Category,ReviewRating
+from .models import Product, Category,ReviewRating,ProductGallery
 from django.views.generic import ListView, DetailView
 from django.db.models import Count
 from carts.models import Cart, CartItem
@@ -40,23 +40,6 @@ class StoreView(ListView):
         
         return context
 
-# def store(request, category_slug=None):
-#     categories = None
-#     products = None
-#     if category_slug != None:
-#         categories = get_object_or_404(Category, slug=category_slug)
-#         products = Product.objects.filter(category=categories, is_available=True)
-#         total_products = Product.objects.filter(category=categories,is_available=True).aggregate(total=Count('id'))['total']
-
-#     else:
-#         products = Product.objects.filter(is_available=True)
-#         total_products = Product.objects.filter(is_available=True).aggregate(total=Count('id'))['total']
-    
-#     context = {
-#         'products': products,
-#         'total_products': total_products,
-#     }
-#     return render(request, 'store/store.html', context)
 
 
 
@@ -99,9 +82,9 @@ class ProductDetailView(DetailView):
         reviews = ReviewRating.objects.filter(product_id=product.id, status=True)
         context['reviews'] = reviews
 
-        # Get product gallery
-      #  product_gallery = ProductGallery.objects.filter(product_id=product.id)
-        #context['product_gallery'] = product_gallery
+        #Get product gallery
+        product_gallery = ProductGallery.objects.filter(product_id=product.id)
+        context['product_gallery'] = product_gallery
 
         return context
     
