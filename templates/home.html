@@ -1,9 +1,8 @@
-
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
+
 
 
 <!-- ========================= SECTION MAIN ========================= -->
@@ -11,10 +10,7 @@
 <div class="container">
 
 <div class="intro-banner-wrap">
-	
-		<img src="{% static "images/banners/1.jpg" %}" class="img-fluid rounded">
-	
-	
+	<img src="{% static 'images/banners/cover.jpg' %}" class="img-fluid rounded">
 </div>
 
 </div> <!-- container //  -->
@@ -26,28 +22,32 @@
 <div class="container">
 
 <header class="section-heading">
-	<a href="{% url "store:store" %}" class="btn btn-outline-primary float-right">See all</a>
+	<a href="{% url 'store' %}" class="btn btn-outline-primary float-right">See all</a>
 	<h3 class="section-title">Popular products</h3>
 </header><!-- sect-heading -->
 
-	
+
 <div class="row">
 	{% for product in products %}
-		<div class="col-md-3">
-			<div class="card card-product-grid">
-				<a href="{{product.get_url}}" class="img-wrap"> 
-					<img src="{{ product.images.url }}" alt="{{ product.name }}">
-				</a>
-				<figcaption class="info-wrap">
-					<a href="{{product.get_url}}" class="title">{{ product.product_name }}</a>
-					<div class="price mt-1">${{ product.price }}</div>
-				</figcaption>
-			</div>
+	<div class="col-md-3">
+		<div class="card card-product-grid">
+			<a href="{{ product.get_url }}" class="img-wrap"> <img src="{{ product.images.url }}"> </a>
+			<figcaption class="info-wrap">
+				<a href="{{ product.get_url }}" class="title">{{ product.product_name }}</a>
+				<div class="price mt-1">$ {{ product.price }}</div> <!-- price-wrap.// -->
+				<div class="rating-star">
+					<span>
+						<i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+						<i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+						<i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+						<i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+						<i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+						</span>
+				</div>
+			</figcaption>
 		</div>
-   {% endfor %}
-
-	
-
+	</div> <!-- col.// -->
+	{% endfor %}
 </div> <!-- row.// -->
 
 </div><!-- container // -->
@@ -57,5 +57,9 @@
 
 
 
+
+
+</body>
+</html>
 
 {% endblock %}

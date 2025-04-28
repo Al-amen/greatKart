@@ -34,7 +34,8 @@ INSTALLED_APPS = [
     'carts',
     'orders',
     'admin_honeypot',
-    'session_timeout',
+    
+   
 ]
 
 MIDDLEWARE = [
@@ -45,7 +46,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'session_timeout.middleware.SessionTimeoutMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'greatKart.urls'
@@ -163,7 +164,11 @@ SSLCOMMERZ_STORE_PASSWORD = os.getenv('SSLCOMMERZ_STORE_PASSWORD')
 
 
 
-# Session timeout settings
-SESSION_EXPIRE_SECONDS = 1800  # 30 minutes
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True  # reset on activity
-SESSION_TIMEOUT_REDIRECT = 'accounts/login/'  # where to send after logout
+# 30 minutes session timeout
+SESSION_COOKIE_AGE = 30 * 60  # 1800 seconds
+
+# Extend the session timeout if user is active
+SESSION_SAVE_EVERY_REQUEST = True
+
+# Optional: expire session when the browser closes
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
