@@ -168,9 +168,9 @@
                                 <span><a href="{% url 'accounts:login' %}">Login now</a></span>
                              </p>
                             {% endif %}
-                            <div class="alert alert-danger" role="alert" style="margin-top:10px;">
+                            {% comment %} <div class="alert alert-danger" role="alert" style="margin-top:10px;">
                                 2-Factor Review Submission is disabled for demo purpose.
-                            </div>
+                            </div> {% endcomment %}
     
                         </div>
                           {% include 'includes/alerts.html' %}

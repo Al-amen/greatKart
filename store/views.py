@@ -14,7 +14,7 @@ class StoreView(ListView):
     model = Product
     template_name = 'store/store.html'
     context_object_name = 'products'
-    paginate_by = 2  # Optional: if you want pagination
+    paginate_by = 10  # Optional: if you want pagination
     page_kwarg = 'page'
 
     def get_queryset(self):
