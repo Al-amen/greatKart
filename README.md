@@ -30,7 +30,6 @@ GreatKart is a full-featured e-commerce platform built with **Django**  offering
 ---
 ## 🗺️ Database Entity Relationship Diagram
 
-![ERD](docs/Er-diagram.png)
 
 <h3>Database ER Diagram</h3>
 <p align="center">
