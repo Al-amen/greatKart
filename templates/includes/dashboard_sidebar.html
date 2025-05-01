@@ -4,12 +4,10 @@
       <a class="list-group-item {% if '/accounts/' == request.path %}active{% endif %}" href="{% url 'accounts:dashboard' %}"> Dashboard </a>
       <a class="list-group-item {% if '/my-orders/' in request.path %}active{% endif %}" href="{% url 'accounts:my-orders' %}"> My Orders </a>
       <a class="list-group-item {% if '/edit-profile/' in request.path %}active{% endif %}" href="{% url "accounts:edit-profile" %}"> Edit Profile </a>
-      <a class="list-group-item {% if '/change-password/' in request.path %}active{% endif %}" href="{% url "accounts:change-password" %}"> Change Password </a> 
-     
+      <a class="list-group-item {% if '/change-password/' in request.path %}active{% endif %}" href="{% url "accounts:change-password" %}"> Change Password </a>
+
     </ul>
     <br>
     <a class="btn btn-light btn-block" href="{% url 'accounts:logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>
     <!--   SIDEBAR .//END   -->
-  </aside> 
-
-  
+  </aside>

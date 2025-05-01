@@ -8,7 +8,7 @@
 {% include 'includes/alerts.html' %}
 <div class="container">
 	<div class="row">
-     {% include 'includes/dashboard_sidebar.html' %} 
+     {% include 'includes/dashboard_sidebar.html' %}
 	<main class="col-md-9">
 		<article class="card">
 		<header class="card-header">
@@ -31,8 +31,8 @@
 				  <tbody>
 						{% for order in orders %}
 				    <tr>
-				     <th scope="row"><a href="{% url 'accounts:order-detail' order.order_number %} ">{{order.order_number}}</a></th> 
-                      
+				     <th scope="row"><a href="{% url 'accounts:order-detail' order.order_number %} ">{{order.order_number}}</a></th>
+
 				      <td>{{order.full_name}}</td>
 				      <td>{{order.phone}}</td>
 				      <td>${{order.order_total}}</td>

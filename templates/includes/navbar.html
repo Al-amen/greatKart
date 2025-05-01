@@ -10,7 +10,7 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
                  <a href="#" class="nav-link">   English </a>
-                
+
             </li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link"> USD </a>
@@ -23,7 +23,7 @@
       </div> <!-- navbar-collapse .// -->
     </div> <!-- container //  -->
     </nav> {% endcomment %}
-    
+
     <section class="header-main border-bottom">
         <div class="container">
     <div class="row align-items-center">
@@ -34,8 +34,8 @@
         </div>
         <div class="col-lg col-sm col-md col-6 flex-grow-0">
             <div class="category-wrap dropdown d-inline-block float-right">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> 
-                    <i class="fa fa-bars"></i> All category 
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa fa-bars"></i> All category
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{% url "store:store"  %}"> All Products </a>
@@ -48,10 +48,10 @@
         <a href="{% url "store:store" %}" class="btn btn-outline-primary">Store</a>
         <div class="col-lg  col-md-6 col-sm-12 col">
             <form action="{% url "store:search" %}" class="search" method="GET">
-                
+
                 <div class="input-group w-100">
                     <input type="text" class="form-control" style="width:60%;" placeholder="Search" name='keyword'>
-                    
+
                     <div class="input-group-append">
                       <button class="btn btn-primary" type="submit">
                         <i class="fa fa-search"></i>
@@ -65,7 +65,7 @@
                         {% if user.id is None %}
                         <div class="widget-header">
                             <small class="title text-muted">Welcome guest!</small>
-                            <div> 
+                            <div>
                                 <a href="{% url "accounts:login" %}">Sign in</a> <span class="dark-transp"> | </span>
                                 <a href="{% url "accounts:register" %}"> Register</a>
                             </div>
@@ -73,7 +73,7 @@
                         {% else %}
                         <div class="widget-header">
                             <small class="title text-muted">Welcome {{user.first_name}}</small>
-                            <div> 
+                            <div>
                                 <a href="{% url "accounts:logout" %}">Logout</a> <span class="dark-transp"> | </span>
                                 <a href="{% url "accounts:dashboard" %}"> Dashboard</a>
                             </div>
@@ -90,9 +90,8 @@
     </div> <!-- row.// -->
         </div> <!-- container.// -->
     </section> <!-- header-main .// -->
-    
-    
-    
-    
+
+
+
+
  </header> <!-- section-header.// -->
-    

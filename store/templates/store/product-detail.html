@@ -6,7 +6,7 @@
 
 <section class="section-content padding-y bg">
     <div class="container">
-    
+
     <!-- ============================ COMPONENT 1 ================================= -->
     <div class="card">
         <div class="row no-gutters">
@@ -30,7 +30,7 @@
   <form action="{% url "carts:add_to_cart" product.id %}" method="POST">
         {% csrf_token %}
         <article class="content-body">
-        
+
         <h2 class="title">{{product.product_name}}</h2>
         <div class="rating-star">
             <span>
@@ -42,14 +42,14 @@
         <span>{{product.countReview}} reviews</span>
                 </span>
         </div>
-        
-        <div class="mb-3"> 
-            <var class="price h4">${{product.price}}</var> 
-        </div> 
-        
+
+        <div class="mb-3">
+            <var class="price h4">${{product.price}}</var>
+        </div>
+
         <p>{{product.description}}</p>
-        
-        
+
+
         <hr>
             <div class="row">
                 <div class="item-option-select">
@@ -60,7 +60,7 @@
                       <option value="{{i.variation_value | lower }}">{{i.variation_value | capfirst}}</option>
                       {% endfor %}
                     </select>
-                      
+
                 </div>
             </div> <!-- row.// -->
             <div class="row">
@@ -79,9 +79,9 @@
                 <div class="alert alert-danger text-center">
                     <strong>Out of Stock</strong>
                 </div>
-          
-                
-                {% else %} 
+
+
+                {% else %}
                   {% comment %} {% if in_cart %}
                     <div class="form-row">
                         <div class="col-sm-6">
@@ -103,14 +103,14 @@
                     </div> <!-- form-row.// -->
                   {% comment %} {% endif %} {% endcomment %}
 
-                
-                    
-            {% endif %} 
-    
-       
+
+
+            {% endif %}
+
+
         {% comment %} {% else %}
         <a href="./product-detail.html" class="btn  btn-primary"> <span class="text">Add to cart</span> <i class="fas fa-shopping-cart"></i>  </a>
-           
+
         {% endif %} {% endcomment %}
 
     </article> <!-- product-info-aside .// -->
@@ -119,15 +119,15 @@
         </div> <!-- row.// -->
     </div> <!-- card.// -->
     <!-- ============================ COMPONENT 1 END .// ================================= -->
-    
+
     <br>
-    
+
     <div class="row">
                 <div class="col-md-9">
                     <form action="{% url "store:submit_review" product.id %}" method="POST">
                         {% csrf_token %}
                         <h5>Write Your Review</h5>
-    
+
                         <div>
                             <!-- Rating stars -->
                             <label>How do you rate this product?</label>
@@ -160,24 +160,24 @@
                             {% else %}
                             <p>You must be logged in to post a review. <span><a href="{% url 'accounts:login' %}">Login now</a></span></p>
                             {% endif %} -->
-    
+
                             {% if user.is_authenticated %}
                                     <input type="submit" value="Submit Review" class="btn btn-primary">
                             {% else %}
-                            <p>You must be logged in to post a review. 
+                            <p>You must be logged in to post a review.
                                 <span><a href="{% url 'accounts:login' %}">Login now</a></span>
                              </p>
                             {% endif %}
                             {% comment %} <div class="alert alert-danger" role="alert" style="margin-top:10px;">
                                 2-Factor Review Submission is disabled for demo purpose.
                             </div> {% endcomment %}
-    
+
                         </div>
                           {% include 'includes/alerts.html' %}
                     </form>
-        
+
                     <br>
-    
+
                     <header class="section-heading">
                         <h3>Customer Reviews </h3>
                         <div class="rating-star">
@@ -190,13 +190,13 @@
                         <span>{{product.countReview}} reviews</span>
                                 </span>
                         </div>
-                    
+
                     </header>
-                    
+
                     {% for review in reviews %}
                                     <article class="box mb-3">
                                         <div class="icontext w-100">
-                    
+
                                             <div class="text">
                                                 <span class="date text-muted float-md-right">{{review.updated_date}} </span>
                                                 <h6 class="mb-1">{{review.user.full_name}} </h6>
@@ -219,12 +219,12 @@
                                         </div>
                                     </article>
                     {% endfor %}
-                    
-                    
+
+
                                 </div> <!-- col.// -->
                             </div> <!-- row.// -->
-                    
-                    
+
+
                         </div> <!-- container .//  -->
                     </section>
                     <!-- ========================= SECTION CONTENT END// ========================= -->

@@ -12,20 +12,20 @@
         {% else %}
            <h2 class="title-page">Our Store</h2>
         {% endif %}
-        
+
     </div> <!-- container //  -->
     </section>
     <!-- ========================= SECTION INTRO END// ========================= -->
-    
+
 
 
     <!-- ========================= SECTION CONTENT ========================= -->
 <section class="section-content padding-y">
    <div class="container">
-    
+
     <div class="row">
         <aside class="col-md-3">
-            
+
     <div class="card">
         <article class="filter-group">
             <header class="card-header">
@@ -36,14 +36,14 @@
             </header>
             <div class="filter-content collapse show" id="collapse_1" style="">
                 <div class="card-body">
-                    
+
                     <ul class="list-menu">
                      <li><a href="{% url "store:store"  %}"> All Products </a></li>
                      {% for category in category_links %}
                      <li><a href="{{category.get_url}}"> {{category.category_name}} </a></li>
                      {% endfor %}
                     </ul>
-    
+
                 </div> <!-- card-body.// -->
             </div>
         </article> <!-- filter-group  .// -->
@@ -60,17 +60,17 @@
                     <input type="checkbox">
                     <span class="btn btn-light"> XS </span>
                   </label>
-    
+
                   <label class="checkbox-btn">
                     <input type="checkbox">
                     <span class="btn btn-light"> SM </span>
                   </label>
-    
+
                   <label class="checkbox-btn">
                     <input type="checkbox">
                     <span class="btn btn-light"> LG </span>
                   </label>
-    
+
                   <label class="checkbox-btn">
                     <input type="checkbox">
                     <span class="btn btn-light"> XXL </span>
@@ -78,7 +78,7 @@
             </div><!-- card-body.// -->
             </div>
         </article> <!-- filter-group .// -->
-        
+
         <article class="filter-group">
             <header class="card-header">
                 <a href="#" data-toggle="collapse" data-target="#collapse_3" aria-expanded="true" class="">
@@ -88,7 +88,7 @@
             </header>
             <div class="filter-content collapse show" id="collapse_3" style="">
                 <div class="card-body">
-                    
+
                     <div class="form-row">
                     <div class="form-group col-md-6">
                       <label>Min</label>
@@ -120,28 +120,28 @@
                 </div><!-- card-body.// -->
             </div>
         </article> <!-- filter-group .// -->
-        
+
     </div> <!-- card.// -->
-    
+
         </aside> <!-- col.// -->
         <main class="col-md-9">
-    
+
     <header class="border-bottom mb-4 pb-3">
             <div class="form-inline">
                 <span class="mr-md-auto">{{total_products}} Items found </span>
-                
+
             </div>
     </header><!-- sect-heading -->
-    
+
     <div class="row">
         {% if products %}
             {% for product in products %}
             <div class="col-md-4">
                 <figure class="card card-product-grid">
-                    <div class="img-wrap"> 
+                    <div class="img-wrap">
                         <a href="{{product.get_url}}"><img src="{{ product.images.url }}" alt="{{ product.product_name }}"></a>
-                        
-                        
+
+
                     </div> <!-- img-wrap.// -->
                     <figcaption class="info-wrap">
                         <div class="fix-height">
@@ -151,8 +151,8 @@
                                 <del class="price-old">$1980</del>
                             </div> <!-- price-wrap.// -->
                         </div>
-                    <a href="{{product.get_url}}" class="btn btn-block btn-success"> View Details </a> 
-                        
+                    <a href="{{product.get_url}}" class="btn btn-block btn-success"> View Details </a>
+
                     </figcaption>
                 </figure>
             </div> <!-- col.// -->
@@ -163,23 +163,23 @@
                     No products found . Try again with different keyword.
                 </div>
         {% endif %}
-    
-       
+
+
 
     </div> <!-- row end.// -->
-    
-    
+
+
     <nav class="mt-4" aria-label="Page navigation sample">
        {% include "includes/pagination.html" %}
     </nav>
-    
+
         </main> <!-- col.// -->
-    
+
     </div>
-    
+
     </div> <!-- container .//  -->
     </section>
     <!-- ========================= SECTION CONTENT END// ========================= -->
-    
+
 
 {% endblock %}

@@ -1,13 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views.generic import ListView
-from  store.models import Product,ReviewRating
 
+from store.models import Product, ReviewRating
 
 
 class ProductListView(ListView):
     model = Product
-    context_object_name = 'products'
-    queryset = Product.objects.filter(is_available=True).order_by('-created_date')
+    context_object_name = "products"
+    queryset = Product.objects.filter(is_available=True).order_by("-created_date")
     template_name = "home.html"
 
     def get_context_data(self, **kwargs):
@@ -19,12 +19,11 @@ class ProductListView(ListView):
             # Store reviews for each product
             reviews = ReviewRating.objects.filter(product_id=product.id, status=True)
             product_reviews[product.id] = reviews
-        
+
         context["reviews"] = product_reviews
         return context
-    
 
-        
+
 def home(request):
     products = Product.objects.all().filter(is_available=True)
 
@@ -34,7 +33,7 @@ def home(request):
     #     reviews = ReviewRating.objects.filter(product_id=product.id, status=True)
 
     context = {
-        'products': products,
-       # 'reviews': reviews,
+        "products": products,
+        # 'reviews': reviews,
     }
-    return render(request, 'home.html', context)
+    return render(request, "home.html", context)

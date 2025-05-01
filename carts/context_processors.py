@@ -4,7 +4,7 @@ from .views import _cart_id
 
 def counter(request):
     cart_count = 0
-    if 'admin' in request.path:
+    if "admin" in request.path:
         return {}
 
     cart_items = []
@@ -24,4 +24,3 @@ def counter(request):
         print(f"Unexpected error: {e}")
 
     return dict(cart_count=cart_count)
-
